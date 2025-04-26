@@ -38,8 +38,12 @@ public abstract class ConfigProvider {
         save();
     }
 
+    private void onReload() {
+    }
+
     public void reload() throws IOException {
         getFileConfig().reload();
+        onReload();
     }
 
     public void update() throws IOException {
