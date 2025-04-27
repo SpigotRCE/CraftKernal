@@ -20,12 +20,9 @@ import java.util.concurrent.CompletableFuture;
  * It automatically registers the command with the proxy server using Brigadier and provides
  * common functionality for executing and tab-completing commands.
  */
-public abstract class VelocityCommand {
+public abstract class VelocityCommand extends VelocityHolder {
     public final String commandName;
     public final String[] commandAliases;
-    public final ProxyServer proxyServer;
-    public final Logger logger;
-    public final Object plugin;
     public final int SINGLE_SUCCESS = Command.SINGLE_SUCCESS;
     /**
      * Constructs a new Command instance and registers the command with the server's CommandMap.
@@ -34,18 +31,16 @@ public abstract class VelocityCommand {
      * @param commandAliases The command aliases.
      */
     public VelocityCommand(String commandName, ProxyServer proxyServer, Logger logger, Object plugin, String... commandAliases) {
+        super(proxyServer, logger, plugin);
         this.commandName = commandName;
-        this.proxyServer = proxyServer;
-        this.logger = logger;
-        this.plugin = plugin;
         this.commandAliases = commandAliases;
 
-        this.proxyServer.getCommandManager().register(
-                this.proxyServer.getCommandManager().metaBuilder(commandName)
+        getProxyServer().getCommandManager().register(
+                getProxyServer().getCommandManager().metaBuilder(commandName)
                         .aliases(commandAliases).plugin(plugin).build(),
                 this.build()
         );
-        this.logger.info("Registered command {}", commandName);
+        getLogger().info("Registered command {}", commandName);
     }
 
     /**
@@ -72,13 +67,13 @@ public abstract class VelocityCommand {
         }
 
         if (partialName.isEmpty()) {
-            proxyServer.getAllPlayers().stream().map(Player::getUsername).forEach(builder::suggest);
+            getProxyServer().getAllPlayers().stream().map(Player::getUsername).forEach(builder::suggest);
             return builder.buildFuture();
         }
 
         String finalPartialName = partialName;
 
-        proxyServer.getAllPlayers().stream().map(Player::getUsername).filter(name -> name.toLowerCase().startsWith(finalPartialName)).forEach(builder::suggest);
+        getProxyServer().getAllPlayers().stream().map(Player::getUsername).filter(name -> name.toLowerCase().startsWith(finalPartialName)).forEach(builder::suggest);
 
         return builder.buildFuture();
     }
