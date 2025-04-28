@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * Abstract class representing a packet.
  */
-public abstract class Packet {
+public abstract class AbstractPacket {
     public abstract void encode(ByteBuf buffer);
 
     public abstract void decode(ByteBuf buffer);
