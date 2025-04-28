@@ -49,13 +49,6 @@ public abstract class VelocityCommand extends VelocityHolder {
         super(proxyServer, logger, plugin);
         this.commandName = commandName;
         this.commandAliases = commandAliases;
-
-        getProxyServer().getCommandManager().register(
-                getProxyServer().getCommandManager().metaBuilder(commandName)
-                        .aliases(commandAliases).plugin(plugin).build(),
-                this.build()
-        );
-        getLogger().info("Registered command {}", commandName);
     }
 
     /**
@@ -74,6 +67,18 @@ public abstract class VelocityCommand extends VelocityHolder {
      */
     public String[] getCommandAliases() {
         return commandAliases;
+    }
+
+    /**
+     * Registers the command with the proxy server.
+     */
+    public void register() {
+        getProxyServer().getCommandManager().register(
+                getProxyServer().getCommandManager().metaBuilder(commandName)
+                        .aliases(commandAliases).plugin(getPlugin()).build(),
+                this.build()
+        );
+        getLogger().info("Registered command {}", commandName);
     }
 
     /**
