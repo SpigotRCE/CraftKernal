@@ -1,4 +1,4 @@
-package io.github.spigotrce.craftkernal.velocity;
+package io.github.spigotrce.craftkernal.velocity.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.ArgumentType;
@@ -11,6 +11,7 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import io.github.spigotrce.craftkernal.velocity.VelocityHolder;
 import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
  * It provides functionality for registering commands with the proxy server using Brigadier
  * and includes helper methods for command execution and tab completion.
  */
-public abstract class VelocityCommand extends VelocityHolder {
+public abstract class VelocityBrigadierCommand extends VelocityHolder {
     /**
      * The name of the command.
      */
@@ -45,7 +46,7 @@ public abstract class VelocityCommand extends VelocityHolder {
      * @param plugin         The plugin instance associated with this command.
      * @param commandAliases The aliases of the command.
      */
-    public VelocityCommand(String commandName, ProxyServer proxyServer, Logger logger, Object plugin, String... commandAliases) {
+    public VelocityBrigadierCommand(String commandName, ProxyServer proxyServer, Logger logger, Object plugin, String... commandAliases) {
         super(proxyServer, logger, plugin);
         this.commandName = commandName;
         this.commandAliases = commandAliases;
