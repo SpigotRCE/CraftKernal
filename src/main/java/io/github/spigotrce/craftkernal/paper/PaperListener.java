@@ -9,14 +9,10 @@ import java.util.logging.Logger;
 
 /**
  * This abstract class serves as a base for all listeners in the plugin.
- * It provides common functionality for registering listeners with the Bukkit server,
- * logging messages, and accessing essential plugin components.
+ * It provides common functionality for registering listeners with the Bukkit server.
  */
-public abstract class PaperListener implements Listener {
+public abstract class PaperListener extends PaperHolder implements Listener {
     private final @NotNull String name;
-    private final JavaPlugin plugin;
-    private final Server server;
-    private final Logger logger;
 
     /**
      * Constructs a new Listener instance.
@@ -26,10 +22,8 @@ public abstract class PaperListener implements Listener {
      * @param logger The Logger instance for logging messages.
      */
     public PaperListener(JavaPlugin plugin, Server server, Logger logger) {
+        super(server, logger, plugin);
         this.name = this.getClass().getSimpleName();
-        this.plugin = plugin;
-        this.server = server;
-        this.logger = logger;
 
         getServer().getPluginManager().registerEvents(this, getPlugin());
         getLogger().info("Registered listener " + getName());
@@ -42,32 +36,5 @@ public abstract class PaperListener implements Listener {
      */
     public @NotNull String getName() {
         return name;
-    }
-
-    /**
-     * Returns the main plugin instance.
-     *
-     * @return The plugin instance.
-     */
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    /**
-     * Returns the Bukkit server instance.
-     *
-     * @return The Bukkit server instance.
-     */
-    public Server getServer() {
-        return server;
-    }
-
-    /**
-     * Returns the Logger instance.
-     *
-     * @return The Logger instance.
-     */
-    public Logger getLogger() {
-        return logger;
     }
 }
