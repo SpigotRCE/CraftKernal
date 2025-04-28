@@ -62,7 +62,7 @@ public abstract class PaperHolder {
      *
      * @return The plugin instance.
      */
-    public Object getPlugin() {
+    public JavaPlugin getPlugin() {
         return plugin;
     }
 }
