@@ -1,4 +1,4 @@
-package io.github.spigotrce.craftkernal.common;
+package io.spigotrce.craftkernal.common;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;

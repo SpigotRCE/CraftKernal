@@ -1,4 +1,4 @@
-package io.github.spigotrce.craftkernal.paper;
+package io.spigotrce.craftkernal.paper;
 
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;

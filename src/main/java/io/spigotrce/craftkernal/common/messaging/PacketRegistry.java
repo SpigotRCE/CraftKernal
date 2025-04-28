@@ -1,4 +1,4 @@
-package io.github.spigotrce.craftkernal.common.messaging;
+package io.spigotrce.craftkernal.common.messaging;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

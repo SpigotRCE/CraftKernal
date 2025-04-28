@@ -1,4 +1,4 @@
-package io.github.spigotrce.craftkernal.velocity;
+package io.spigotrce.craftkernal.velocity;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;

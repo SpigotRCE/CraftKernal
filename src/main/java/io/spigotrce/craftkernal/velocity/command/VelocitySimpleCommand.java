@@ -1,12 +1,9 @@
-package io.github.spigotrce.craftkernal.velocity.command;
+package io.spigotrce.craftkernal.velocity.command;
 
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.ProxyServer;
-import io.github.spigotrce.craftkernal.velocity.VelocityHolder;
+import io.spigotrce.craftkernal.velocity.VelocityHolder;
 import org.slf4j.Logger;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class VelocitySimpleCommand extends VelocityHolder implements SimpleCommand {
     /**
