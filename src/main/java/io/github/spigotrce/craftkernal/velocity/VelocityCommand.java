@@ -17,18 +17,33 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * This abstract class serves as a base for creating custom commands in a Velocity plugin.
- * It automatically registers the command with the proxy server using Brigadier and provides
- * common functionality for executing and tab-completing commands.
+ * It provides functionality for registering commands with the proxy server using Brigadier
+ * and includes helper methods for command execution and tab completion.
  */
 public abstract class VelocityCommand extends VelocityHolder {
-    public final String commandName;
-    public final String[] commandAliases;
-    public final int SINGLE_SUCCESS = Command.SINGLE_SUCCESS;
     /**
-     * Constructs a new Command instance and registers the command with the server's CommandMap.
+     * The name of the command.
+     */
+    private final String commandName;
+
+    /**
+     * The aliases of the command.
+     */
+    private final String[] commandAliases;
+
+    /**
+     * A constant representing a successful command execution.
+     */
+    public final int SINGLE_SUCCESS = Command.SINGLE_SUCCESS;
+
+    /**
+     * Constructs a new VelocityCommand instance and registers it with the proxy server.
      *
      * @param commandName    The name of the command.
-     * @param commandAliases The command aliases.
+     * @param proxyServer    The Velocity proxy server instance.
+     * @param logger         The logger instance for logging messages.
+     * @param plugin         The plugin instance associated with this command.
+     * @param commandAliases The aliases of the command.
      */
     public VelocityCommand(String commandName, ProxyServer proxyServer, Logger logger, Object plugin, String... commandAliases) {
         super(proxyServer, logger, plugin);
@@ -44,14 +59,32 @@ public abstract class VelocityCommand extends VelocityHolder {
     }
 
     /**
-     * Returns the BrigadierCommand implementation for this command.
+     * Gets the name of the command.
+     *
+     * @return The name of the command.
+     */
+    public String getCommandName() {
+        return commandName;
+    }
+
+    /**
+     * Gets the aliases of the command.
+     *
+     * @return The aliases of the command.
+     */
+    public String[] getCommandAliases() {
+        return commandAliases;
+    }
+
+    /**
+     * Builds and returns the BrigadierCommand implementation for this command.
      *
      * @return The BrigadierCommand implementation.
      */
     public abstract BrigadierCommand build();
 
     /**
-     * Helper method to suggest online players.
+     * Suggests online players for tab completion.
      *
      * @param ctx     The command context.
      * @param builder The suggestions builder.
@@ -79,7 +112,7 @@ public abstract class VelocityCommand extends VelocityHolder {
     }
 
     /**
-     * Helper method to create a literal argument builder for Brigadier.
+     * Creates a literal argument builder for Brigadier.
      *
      * @param name The name of the literal argument.
      * @return A Brigadier literal argument builder.
@@ -89,10 +122,11 @@ public abstract class VelocityCommand extends VelocityHolder {
     }
 
     /**
-     * Helper method to create an argument builder for Brigadier.
+     * Creates a required argument builder for Brigadier.
      *
      * @param name The name of the argument.
      * @param type The type of the argument.
+     * @param <T>  The type parameter of the argument.
      * @return A Brigadier required argument builder.
      */
     public <T> RequiredArgumentBuilder<CommandSource, T> argument(final String name, final ArgumentType<T> type) {
