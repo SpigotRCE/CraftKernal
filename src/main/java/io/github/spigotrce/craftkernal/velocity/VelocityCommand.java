@@ -86,15 +86,16 @@ public abstract class VelocityCommand extends VelocityHolder {
     /**
      * Suggests online players for tab completion.
      *
-     * @param ctx     The command context.
-     * @param builder The suggestions builder.
+     * @param ctx          The command context.
+     * @param builder      The suggestions builder.
+     * @param argumentName The name of the argument to suggest players for.
      * @return A CompletableFuture containing the suggestions.
      */
-    public CompletableFuture<Suggestions> suggestOnlinePlayers(CommandContext<?> ctx, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> suggestOnlinePlayers(CommandContext<?> ctx, SuggestionsBuilder builder, String argumentName) {
         String partialName;
 
         try {
-            partialName = ctx.getArgument("user", String.class).toLowerCase();
+            partialName = ctx.getArgument(argumentName, String.class).toLowerCase();
         } catch (IllegalArgumentException ignored) {
             partialName = "";
         }
