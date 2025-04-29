@@ -11,7 +11,6 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import io.spigotrce.craftkernal.velocity.VelocityHolder;
 import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,53 +20,23 @@ import java.util.concurrent.CompletableFuture;
  * It provides functionality for registering commands with the proxy server using Brigadier
  * and includes helper methods for command execution and tab completion.
  */
-public abstract class VelocityBrigadierCommand extends VelocityHolder {
-    /**
-     * The name of the command.
-     */
-    private final String commandName;
-
-    /**
-     * The aliases of the command.
-     */
-    private final String[] commandAliases;
-
+public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
     /**
      * A constant representing a successful command execution.
      */
     public final int SINGLE_SUCCESS = Command.SINGLE_SUCCESS;
 
     /**
-     * Constructs a new VelocityCommand instance and registers it with the proxy server.
+     * Constructs a new VelocityBrigadierCommand with the specified proxy server, logger, and plugin, command name, and command aliases.
      *
-     * @param commandName    The name of the command.
-     * @param proxyServer    The Velocity proxy server instance.
-     * @param logger         The logger instance for logging messages.
-     * @param plugin         The plugin instance associated with this command.
-     * @param commandAliases The aliases of the command.
+     * @param proxyServer        The Velocity proxy server instance.
+     * @param logger             The logger instance for logging.
+     * @param plugin             The plugin instance associated with this holder.
+     * @param commandName        The name of the command.
+     * @param commandAliases     The aliases of the command.
      */
-    public VelocityBrigadierCommand(String commandName, ProxyServer proxyServer, Logger logger, Object plugin, String... commandAliases) {
-        super(proxyServer, logger, plugin);
-        this.commandName = commandName;
-        this.commandAliases = commandAliases;
-    }
-
-    /**
-     * Gets the name of the command.
-     *
-     * @return The name of the command.
-     */
-    public String getCommandName() {
-        return commandName;
-    }
-
-    /**
-     * Gets the aliases of the command.
-     *
-     * @return The aliases of the command.
-     */
-    public String[] getCommandAliases() {
-        return commandAliases;
+    public VelocityBrigadierCommand(ProxyServer proxyServer, Logger logger, Object plugin, String commandName, String... commandAliases) {
+        super(proxyServer, logger, plugin, commandName, commandAliases);
     }
 
     /**
@@ -75,11 +44,11 @@ public abstract class VelocityBrigadierCommand extends VelocityHolder {
      */
     public void register() {
         getProxyServer().getCommandManager().register(
-                getProxyServer().getCommandManager().metaBuilder(commandName)
-                        .aliases(commandAliases).plugin(getPlugin()).build(),
+                getProxyServer().getCommandManager().metaBuilder(getCommandName())
+                        .aliases(getCommandAliases()).plugin(getPlugin()).build(),
                 this.build()
         );
-        getLogger().info("Registered command {}", commandName);
+        getLogger().info("Registered command {}", getCommandName());
     }
 
     /**
