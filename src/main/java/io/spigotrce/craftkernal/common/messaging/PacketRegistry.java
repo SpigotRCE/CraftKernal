@@ -1,15 +1,12 @@
 package io.spigotrce.craftkernal.common.messaging;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * A registry for managing packets using integer IDs and a ByteBuf-based system.
+ * A registry for managing packets using integer IDs and a PacketBuffer-based system.
  * This class provides functionality for registering, encoding, decoding, and sending packets.
  *
  * @param <T> The type of the connection object used for sending packets.
@@ -23,7 +20,7 @@ public class PacketRegistry<T> {
     /**
      * Map of packet classes to their corresponding IDs.
      */
-    private final Map<Class<? extends AbstractPacket>, Integer> classToId = new HashMap<>();
+    private final Map<Class<? extends Packet>, Integer> classToId = new HashMap<>();
 
     /**
      * A sender responsible for sending packets to a connection.
@@ -52,7 +49,7 @@ public class PacketRegistry<T> {
      * @param <P>         The type of the packet.
      * @return The integer ID assigned to the packet.
      */
-    public <P extends AbstractPacket> int registerPacket(Supplier<P> supplier, Consumer<P> initializer) {
+    public <P extends Packet> int registerPacket(Supplier<P> supplier, Consumer<P> initializer) {
         int id = nextId++;
         PacketEntry<P> entry = new PacketEntry<>(id, supplier, packet -> initializer.accept(safeCast(packet)));
         idToEntry.put(id, entry);
@@ -67,7 +64,7 @@ public class PacketRegistry<T> {
      * @return The ID of the packet.
      * @throws IllegalArgumentException If the packet class is not registered.
      */
-    public int getIdFor(AbstractPacket packet) {
+    public int getIdFor(Packet packet) {
         Integer id = classToId.get(packet.getClass());
         if (id == null) {
             throw new IllegalArgumentException("Unregistered packet class: " + packet.getClass().getName());
@@ -82,16 +79,16 @@ public class PacketRegistry<T> {
      * @throws IllegalArgumentException If the packet ID is unknown.
      */
     public void decodeAndApply(byte[] data) {
-        decodeAndApply(Unpooled.wrappedBuffer(data));
+        decodeAndApply(new PacketBuffer(data));
     }
 
     /**
-     * Decodes and applies a packet from a ByteBuf.
+     * Decodes and applies a packet from a PacketBuffer.
      *
-     * @param buffer The ByteBuf containing the packet data.
+     * @param buffer The PacketBuffer containing the packet data.
      * @throws IllegalArgumentException If the packet ID is unknown.
      */
-    public void decodeAndApply(ByteBuf buffer) {
+    public void decodeAndApply(PacketBuffer buffer) {
         int id = buffer.readInt();
 
         PacketEntry<?> entry = idToEntry.get(id);
@@ -99,7 +96,7 @@ public class PacketRegistry<T> {
             throw new IllegalArgumentException("Unknown packet ID: " + id);
         }
 
-        AbstractPacket packet = entry.supplier.get();
+        Packet packet = entry.supplier.get();
         packet.decode(buffer);
         entry.initializer.accept(packet);
     }
@@ -111,18 +108,18 @@ public class PacketRegistry<T> {
      * @param connection The target connection to send the packet to.
      * @throws IllegalArgumentException If the packet class is not registered.
      */
-    public void encodeAndSend(AbstractPacket packet, T connection) {
+    public void encodeAndSend(Packet packet, T connection) {
         Integer id = classToId.get(packet.getClass());
         if (id == null) {
             throw new IllegalArgumentException("Unregistered packet class: " + packet.getClass().getName());
         }
 
-        ByteBuf buffer = Unpooled.buffer();
+        PacketBuffer buffer = new PacketBuffer();
         buffer.writeInt(id);
         packet.encode(buffer);
 
-        byte[] data = new byte[buffer.readableBytes()];
-        buffer.getBytes(0, data);
+        byte[] data = new byte[buffer.buffer().readableBytes()];
+        buffer.buffer().getBytes(0, data);
         sender.send(connection, data);
     }
 
@@ -134,7 +131,7 @@ public class PacketRegistry<T> {
      * @return The casted packet.
      */
     @SuppressWarnings("unchecked")
-    private <P extends AbstractPacket> P safeCast(AbstractPacket packet) {
+    private <P extends Packet> P safeCast(Packet packet) {
         return (P) packet;
     }
 
@@ -143,10 +140,10 @@ public class PacketRegistry<T> {
      *
      * @param <P> The type of the packet.
      */
-    private record PacketEntry<P extends AbstractPacket>(
+    private record PacketEntry<P extends Packet>(
             int id,
             Supplier<P> supplier,
-            Consumer<AbstractPacket> initializer
+            Consumer<Packet> initializer
     ) {
     }
 

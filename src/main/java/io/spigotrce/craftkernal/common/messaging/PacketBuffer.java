@@ -1,93 +1,99 @@
 package io.spigotrce.craftkernal.common.messaging;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-/**
- * Abstract class representing a packet.
- */
-public abstract class AbstractPacket {
-    public abstract void encode(ByteBuf buffer);
+public record PacketBuffer(ByteBuf buffer) {
+    public PacketBuffer() {
+        this(Unpooled.buffer());
+    }
 
-    public abstract void decode(ByteBuf buffer);
+    public PacketBuffer(byte[] bytes) {
+        this(Unpooled.wrappedBuffer(bytes));
+    }
 
-    public static void writeString(ByteBuf buffer, String value) {
+    public PacketBuffer(ByteBuf buffer) {
+        this.buffer = buffer;
+    }
+
+    public void writeString(String value) {
         byte[] bytes = value.getBytes(Charset.defaultCharset());
         buffer.writeInt(bytes.length);
         buffer.writeBytes(bytes);
     }
 
-    public static String readString(ByteBuf buffer) {
+    public String readString() {
         int length = buffer.readInt();
         byte[] bytes = new byte[length];
         buffer.readBytes(bytes);
         return new String(bytes, Charset.defaultCharset());
     }
 
-    public static void writeBoolean(ByteBuf buffer, boolean value) {
+    public void writeBoolean(boolean value) {
         buffer.writeByte(value ? 1 : 0);
     }
 
-    public static boolean readBoolean(ByteBuf buffer) {
+    public boolean readBoolean() {
         return buffer.readByte() == 1;
     }
 
-    public static void writeLong(ByteBuf buffer, long value) {
+    public void writeLong(long value) {
         buffer.writeLong(value);
     }
 
-    public static long readLong(ByteBuf buffer) {
+    public long readLong() {
         return buffer.readLong();
     }
 
-    public static void writeInt(ByteBuf buffer, int value) {
+    public void writeInt(int value) {
         buffer.writeInt(value);
     }
 
-    public static int readInt(ByteBuf buffer) {
+    public int readInt() {
         return buffer.readInt();
     }
 
-    public static void writeShort(ByteBuf buffer, short value) {
+    public void writeShort(short value) {
         buffer.writeShort(value);
     }
 
-    public static short readShort(ByteBuf buffer) {
+    public short readShort() {
         return buffer.readShort();
     }
 
-    public static void writeByte(ByteBuf buffer, byte value) {
+    public void writeByte(byte value) {
         buffer.writeByte(value);
     }
 
-    public static byte readByte(ByteBuf buffer) {
+    public byte readByte() {
         return buffer.readByte();
     }
 
-    public static void writeDouble(ByteBuf buffer, double value) {
+    public void writeDouble(double value) {
         buffer.writeDouble(value);
     }
 
-    public static double readDouble(ByteBuf buffer) {
+    public double readDouble() {
         return buffer.readDouble();
     }
 
-    public static void writeFloat(ByteBuf buffer, float value) {
+    public void writeFloat(float value) {
         buffer.writeFloat(value);
     }
 
-    public static float readFloat(ByteBuf buffer) {
+    public float readFloat() {
         return buffer.readFloat();
     }
 
-    public static void writeUUID(ByteBuf buffer, UUID uuid) {
+    public void writeUUID(UUID uuid) {
         buffer.writeLong(uuid.getMostSignificantBits());
         buffer.writeLong(uuid.getLeastSignificantBits());
     }
 
-    public static UUID readUUID(ByteBuf buffer) {
+    public UUID readUUID() {
         return new UUID(buffer.readLong(), buffer.readLong());
     }
 }
