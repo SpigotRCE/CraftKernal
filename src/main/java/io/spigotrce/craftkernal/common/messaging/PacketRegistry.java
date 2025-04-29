@@ -9,42 +9,63 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Registry for packets using int IDs and the new ByteBuf-based packet system,
- * but with old initializer-style handling.
+ * A registry for managing packets using integer IDs and a ByteBuf-based system.
+ * This class provides functionality for registering, encoding, decoding, and sending packets.
+ *
+ * @param <T> The type of the connection object used for sending packets.
  */
-public class PacketRegistry {
+public class PacketRegistry<T> {
+    /**
+     * Map of packet IDs to their corresponding packet entries.
+     */
     private final Map<Integer, PacketEntry<?>> idToEntry = new HashMap<>();
+
+    /**
+     * Map of packet classes to their corresponding IDs.
+     */
     private final Map<Class<? extends AbstractPacket>, Integer> classToId = new HashMap<>();
-    private final Consumer<PacketSender> sender;
+
+    /**
+     * A sender responsible for sending packets to a connection.
+     */
+    private final BiPacketSender<T> sender;
+
+    /**
+     * Counter for assigning unique IDs to packets.
+     */
     private int nextId = 0;
 
-    public PacketRegistry(Consumer<PacketSender> sender) {
+    /**
+     * Constructs a new PacketRegistry with the specified sender.
+     *
+     * @param sender A functional interface responsible for sending packets.
+     */
+    public PacketRegistry(BiPacketSender<T> sender) {
         this.sender = sender;
     }
 
     /**
      * Registers a new packet with an automatically assigned integer ID.
      *
-     * @param supplier    supplier to create the packet instance
-     * @param initializer consumer to handle the packet
-     * @param <T>         packet type
-     *
-     * @return Returns the integer ID of the packet.
+     * @param supplier    A supplier to create the packet instance.
+     * @param initializer A consumer to handle the packet.
+     * @param <P>         The type of the packet.
+     * @return The integer ID assigned to the packet.
      */
-    public <T extends AbstractPacket> int registerPacket(Supplier<T> supplier, Consumer<T> initializer) {
+    public <P extends AbstractPacket> int registerPacket(Supplier<P> supplier, Consumer<P> initializer) {
         int id = nextId++;
-        PacketEntry<T> entry = new PacketEntry<>(id, supplier, packet -> initializer.accept(safeCast(packet)));
+        PacketEntry<P> entry = new PacketEntry<>(id, supplier, packet -> initializer.accept(safeCast(packet)));
         idToEntry.put(id, entry);
         classToId.put(supplier.get().getClass(), id);
         return id;
     }
 
     /**
-     * Gets the registered ID for a packet instance.
+     * Gets the registered ID for a given packet instance.
      *
-     * @param packet the packet
-     * @return the packet's ID
-     * @throws IllegalArgumentException if the packet class is not registered
+     * @param packet The packet instance.
+     * @return The ID of the packet.
+     * @throws IllegalArgumentException If the packet class is not registered.
      */
     public int getIdFor(AbstractPacket packet) {
         Integer id = classToId.get(packet.getClass());
@@ -57,10 +78,20 @@ public class PacketRegistry {
     /**
      * Decodes and applies a packet from raw byte data.
      *
-     * @param data the raw byte array
+     * @param data The raw byte array containing the packet data.
+     * @throws IllegalArgumentException If the packet ID is unknown.
      */
     public void decodeAndApply(byte[] data) {
-        ByteBuf buffer = Unpooled.wrappedBuffer(data);
+        decodeAndApply(Unpooled.wrappedBuffer(data));
+    }
+
+    /**
+     * Decodes and applies a packet from a ByteBuf.
+     *
+     * @param buffer The ByteBuf containing the packet data.
+     * @throws IllegalArgumentException If the packet ID is unknown.
+     */
+    public void decodeAndApply(ByteBuf buffer) {
         int id = buffer.readInt();
 
         PacketEntry<?> entry = idToEntry.get(id);
@@ -76,10 +107,11 @@ public class PacketRegistry {
     /**
      * Encodes and sends a packet over a connection.
      *
-     * @param packet     the packet
-     * @param connection the target connection
+     * @param packet     The packet to encode and send.
+     * @param connection The target connection to send the packet to.
+     * @throws IllegalArgumentException If the packet class is not registered.
      */
-    public void encodeAndSend(AbstractPacket packet, Object connection) {
+    public void encodeAndSend(AbstractPacket packet, T connection) {
         Integer id = classToId.get(packet.getClass());
         if (id == null) {
             throw new IllegalArgumentException("Unregistered packet class: " + packet.getClass().getName());
@@ -89,19 +121,48 @@ public class PacketRegistry {
         buffer.writeInt(id);
         packet.encode(buffer);
 
-        byte[] bytes = new byte[buffer.readableBytes()];
-        buffer.readBytes(bytes);
-        sender.accept(new PacketSender(connection, bytes));
+        byte[] data = new byte[buffer.readableBytes()];
+        buffer.getBytes(0, data);
+        sender.send(connection, data);
     }
 
+    /**
+     * Safely casts an AbstractPacket to a specific packet type.
+     *
+     * @param packet The packet to cast.
+     * @param <P>    The target packet type.
+     * @return The casted packet.
+     */
     @SuppressWarnings("unchecked")
-    private <T extends AbstractPacket> T safeCast(AbstractPacket packet) {
-        return (T) packet;
+    private <P extends AbstractPacket> P safeCast(AbstractPacket packet) {
+        return (P) packet;
     }
 
-    private record PacketEntry<T extends AbstractPacket>(int id, Supplier<T> supplier, Consumer<AbstractPacket> initializer) {
+    /**
+     * Represents an entry in the packet registry.
+     *
+     * @param <P> The type of the packet.
+     */
+    private record PacketEntry<P extends AbstractPacket>(
+            int id,
+            Supplier<P> supplier,
+            Consumer<AbstractPacket> initializer
+    ) {
     }
 
-    public record PacketSender(Object connection, byte[] data) {
+    /**
+     * Functional interface for sending packets to a connection.
+     *
+     * @param <T> The type of the connection object.
+     */
+    @FunctionalInterface
+    public interface BiPacketSender<T> {
+        /**
+         * Sends a packet to the specified connection.
+         *
+         * @param connection The target connection.
+         * @param data       The packet data to send.
+         */
+        void send(T connection, byte[] data);
     }
 }
