@@ -96,4 +96,12 @@ public record PacketBuffer(ByteBuf buffer) {
     public UUID readUUID() {
         return new UUID(buffer.readLong(), buffer.readLong());
     }
+
+    public void writeEnumConstant(Enum<?> instance) {
+        this.writeInt(instance.ordinal());
+    }
+
+    public <T extends Enum<T>> T readEnumConstant(Class<T> enumClass) {
+        return (T)enumClass.getEnumConstants()[this.readInt()];
+    }
 }
