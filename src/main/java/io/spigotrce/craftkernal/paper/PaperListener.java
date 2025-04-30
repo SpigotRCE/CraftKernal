@@ -12,8 +12,6 @@ import java.util.logging.Logger;
  * It provides common functionality for registering listeners with the Bukkit server.
  */
 public abstract class PaperListener extends PaperHolder implements Listener {
-    private final @NotNull String name;
-
     /**
      * Constructs a new Listener instance.
      *
@@ -23,18 +21,8 @@ public abstract class PaperListener extends PaperHolder implements Listener {
      */
     public PaperListener(JavaPlugin plugin, Server server, Logger logger) {
         super(server, logger, plugin);
-        this.name = this.getClass().getSimpleName();
 
         getServer().getPluginManager().registerEvents(this, getPlugin());
-        getLogger().info("Registered listener " + getName());
-    }
-
-    /**
-     * Returns the simple name of the Listener class.
-     *
-     * @return The name of the Listener.
-     */
-    public @NotNull String getName() {
-        return name;
+        getLogger().info("Registered listener " + getClassName());
     }
 }

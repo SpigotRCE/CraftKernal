@@ -9,11 +9,6 @@ import org.slf4j.Logger;
  */
 public class VelocityListener extends VelocityHolder {
     /**
-     * The name of the listener, derived from the class name.
-     */
-    private final String name;
-
-    /**
      * Constructs a new VelocityListener and registers it with the proxy server's event manager.
      *
      * @param proxyServer The Velocity proxy server instance.
@@ -22,18 +17,8 @@ public class VelocityListener extends VelocityHolder {
      */
     public VelocityListener(ProxyServer proxyServer, Logger logger, Object plugin) {
         super(proxyServer, logger, plugin);
-        this.name = this.getClass().getSimpleName();
 
         proxyServer.getEventManager().register(plugin, this);
-        logger.info("Registered listener {}", name);
-    }
-
-    /**
-     * Gets the name of the listener.
-     *
-     * @return The name of the listener.
-     */
-    public String getName() {
-        return name;
+        logger.info("Registered listener {}", getClassName());
     }
 }

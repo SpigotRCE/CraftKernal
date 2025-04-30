@@ -1,5 +1,6 @@
 package io.spigotrce.craftkernal.paper;
 
+import io.spigotrce.craftkernal.common.holder.ClassHolder;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,7 +10,7 @@ import java.util.logging.Logger;
  * This class holds the Bukkit server instance, logger, and plugin instance.
  * It is used to provide access to these components throughout the plugin.
  */
-public abstract class PaperHolder {
+public abstract class PaperHolder extends ClassHolder {
     /**
      * The instance of the Velocity proxy server.
      */

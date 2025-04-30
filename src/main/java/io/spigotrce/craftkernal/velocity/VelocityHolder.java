@@ -1,13 +1,14 @@
 package io.spigotrce.craftkernal.velocity;
 
 import com.velocitypowered.api.proxy.ProxyServer;
+import io.spigotrce.craftkernal.common.holder.ClassHolder;
 import org.slf4j.Logger;
 
 /**
  * This class holds the Velocity server instance, logger, and plugin instance.
  * It is used to provide access to these components throughout the plugin.
  */
-public abstract class VelocityHolder {
+public abstract class VelocityHolder extends ClassHolder {
     /**
      * The instance of the Velocity proxy server.
      */
