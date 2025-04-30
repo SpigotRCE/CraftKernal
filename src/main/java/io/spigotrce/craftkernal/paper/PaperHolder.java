@@ -29,9 +29,9 @@ public abstract class PaperHolder {
     /**
      * Constructs a new PaperHolder with the specified proxy server, logger, and plugin.
      *
-     * @param server      The Bukkit server instance.
-     * @param logger      The logger instance for logging.
-     * @param plugin      The plugin instance associated with this holder.
+     * @param server The Bukkit server instance.
+     * @param logger The logger instance for logging.
+     * @param plugin The plugin instance associated with this holder.
      */
     public PaperHolder(Server server, Logger logger, JavaPlugin plugin) {
         this.server = server;

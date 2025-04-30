@@ -136,18 +136,6 @@ public class PacketRegistry<T> {
     }
 
     /**
-     * Represents an entry in the packet registry.
-     *
-     * @param <P> The type of the packet.
-     */
-    private record PacketEntry<P extends Packet>(
-            int id,
-            Supplier<P> supplier,
-            Consumer<Packet> initializer
-    ) {
-    }
-
-    /**
      * Functional interface for sending packets to a connection.
      *
      * @param <T> The type of the connection object.
@@ -161,5 +149,17 @@ public class PacketRegistry<T> {
          * @param data       The packet data to send.
          */
         void send(T connection, byte[] data);
+    }
+
+    /**
+     * Represents an entry in the packet registry.
+     *
+     * @param <P> The type of the packet.
+     */
+    private record PacketEntry<P extends Packet>(
+            int id,
+            Supplier<P> supplier,
+            Consumer<Packet> initializer
+    ) {
     }
 }
