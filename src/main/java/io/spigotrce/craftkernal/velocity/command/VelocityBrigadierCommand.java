@@ -46,17 +46,24 @@ public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
         getProxyServer().getCommandManager().register(
                 getProxyServer().getCommandManager().metaBuilder(getCommandName())
                         .aliases(getCommandAliases()).plugin(getPlugin()).build(),
-                this.build()
+                new BrigadierCommand(
+                        this.build(
+                                literal(
+                                        getCommandName()
+                                )
+                        )
+                )
         );
         getLogger().info("Registered command {}", getCommandName());
     }
 
     /**
-     * Builds and returns the BrigadierCommand implementation for this command.
+     * Builds the command using a Brigadier literal argument builder.
      *
-     * @return The BrigadierCommand implementation.
+     * @param root The root literal argument builder.
+     * @return A Brigadier literal argument builder for the command.
      */
-    public abstract BrigadierCommand build();
+    public abstract LiteralArgumentBuilder<CommandSource> build(LiteralArgumentBuilder<CommandSource> root);
 
     /**
      * Suggests online players for tab completion.
