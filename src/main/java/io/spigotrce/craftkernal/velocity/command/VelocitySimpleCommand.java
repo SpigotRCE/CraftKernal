@@ -17,4 +17,16 @@ public abstract class VelocitySimpleCommand extends VelocityCommandHolder implem
     public VelocitySimpleCommand(ProxyServer proxyServer, Logger logger, Object plugin, String commandName, String... commandAliases) {
         super(proxyServer, logger, plugin, commandName, commandAliases);
     }
+
+    /**
+     * Registers the command with the proxy server.
+     */
+    public void register() {
+        getProxyServer().getCommandManager().register(
+                getProxyServer().getCommandManager().metaBuilder(getCommandName())
+                        .aliases(getCommandAliases()).plugin(getPlugin()).build(),
+                this
+        );
+        getLogger().info("Registered command {}", getCommandName());
+    }
 }
