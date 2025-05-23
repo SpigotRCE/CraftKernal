@@ -11,6 +11,7 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import io.spigotrce.craftkernal.velocity.VelocityHolder;
 import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +22,11 @@ import java.util.concurrent.CompletableFuture;
  * and includes helper methods for command execution and tab completion.
  */
 public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
+    /*
+        * The {@link VelocityHolder} holder.
+     */
+    private final VelocityHolder holder;
+
     /**
      * A constant representing a successful command execution.
      */
@@ -29,23 +35,22 @@ public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
     /**
      * Constructs a new VelocityBrigadierCommand with the specified proxy server, logger, and plugin, command name, and command aliases.
      *
-     * @param proxyServer    The Velocity proxy server instance.
-     * @param logger         The logger instance for logging.
-     * @param plugin         The plugin instance associated with this holder.
+     * @param holder    The {@link VelocityHolder} holder.
      * @param commandName    The name of the command.
      * @param commandAliases The aliases of the command.
      */
-    public VelocityBrigadierCommand(ProxyServer proxyServer, Logger logger, Object plugin, String commandName, String... commandAliases) {
-        super(proxyServer, logger, plugin, commandName, commandAliases);
+    public VelocityBrigadierCommand(VelocityHolder holder, String commandName, String... commandAliases) {
+        super(commandName, commandAliases);
+        this.holder = holder;
     }
 
     /**
      * Registers the command with the proxy server.
      */
     public void register() {
-        getProxyServer().getCommandManager().register(
-                getProxyServer().getCommandManager().metaBuilder(getCommandName())
-                        .aliases(getCommandAliases()).plugin(getPlugin()).build(),
+        this.holder.getServer().getCommandManager().register(
+                this.holder.getServer().getCommandManager().metaBuilder(getCommandName())
+                        .aliases(getCommandAliases()).plugin(this.holder.getPlugin()).build(),
                 new BrigadierCommand(
                         this.build(
                                 literal(
@@ -54,7 +59,16 @@ public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
                         )
                 )
         );
-        getLogger().info("Registered command {}", getCommandName());
+        this.holder.getLogger().info("Registered command {}", getCommandName());
+    }
+
+    /**
+     * Gets the {@link VelocityHolder} holder.
+     *
+     * @return The {@link VelocityHolder} holder.
+     */
+    public VelocityHolder getHolder() {
+        return holder;
     }
 
     /**
@@ -83,13 +97,13 @@ public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
         }
 
         if (partialName.isEmpty()) {
-            getProxyServer().getAllPlayers().stream().map(Player::getUsername).forEach(builder::suggest);
+            this.holder.getServer().getAllPlayers().stream().map(Player::getUsername).forEach(builder::suggest);
             return builder.buildFuture();
         }
 
         String finalPartialName = partialName;
 
-        getProxyServer().getAllPlayers().stream().map(Player::getUsername).filter(name -> name.toLowerCase().startsWith(finalPartialName)).forEach(builder::suggest);
+        this.holder.getServer().getAllPlayers().stream().map(Player::getUsername).filter(name -> name.toLowerCase().startsWith(finalPartialName)).forEach(builder::suggest);
 
         return builder.buildFuture();
     }

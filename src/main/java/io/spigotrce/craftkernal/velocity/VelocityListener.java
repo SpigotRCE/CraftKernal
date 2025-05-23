@@ -7,18 +7,29 @@ import org.slf4j.Logger;
  * This abstract class serves as a base for creating custom listeners in a Velocity plugin.
  * It automatically registers the listener with the proxy server.
  */
-public class VelocityListener extends VelocityHolder {
+public abstract class VelocityListener {
+    /**
+     * The {@link VelocityHolder} holder.
+     */
+    private final VelocityHolder holder;
+
     /**
      * Constructs a new VelocityListener and registers it with the proxy server's event manager.
      *
-     * @param proxyServer The Velocity proxy server instance.
-     * @param logger      The logger instance for logging.
-     * @param plugin      The plugin instance associated with this listener.
+     * @param holder The {@link VelocityHolder} holder.
      */
-    public VelocityListener(ProxyServer proxyServer, Logger logger, Object plugin) {
-        super(proxyServer, logger, plugin);
+    public VelocityListener(VelocityHolder holder) {
+        this.holder = holder;
+        this.holder.getServer().getEventManager().register(this.holder.getPlugin(), this);
+        this.holder.getLogger().info("Registered listener {}", this.holder.getClassName());
+    }
 
-        proxyServer.getEventManager().register(plugin, this);
-        logger.info("Registered listener {}", getClassName());
+    /**
+     * Gets the {@link VelocityHolder} holder.
+     *
+     * @return The {@link VelocityHolder} holder.
+     */
+    public VelocityHolder getHolder() {
+        return holder;
     }
 }
