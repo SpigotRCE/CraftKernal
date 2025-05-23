@@ -10,8 +10,14 @@ public abstract class ClassHolder {
      */
     private final String className;
 
+    /**
+     * The class name with the package.
+     */
+    private final String classNameWithPackage;
+
     public ClassHolder() {
         this.className = this.getClass().getSimpleName();
+        this.classNameWithPackage = this.getClass().getName();
     }
 
     /**
@@ -29,6 +35,6 @@ public abstract class ClassHolder {
      * @return The class name with the package.
      */
     public String getClassNameWithPackage() {
-        return this.getClass().getName();
+        return classNameWithPackage;
     }
 }
