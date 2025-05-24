@@ -24,12 +24,15 @@ public abstract class BungeeCommand extends CommandHolder implements TabExecutor
         super(commandName, permissionNode, commandAliases);
         this.holder = holder;
 
-        new Command(getCommandName(), getPermissionNode(), getCommandAliases()) {
-            @Override
-            public void execute(CommandSender sender, String[] args) {
-                BungeeCommand.this.execute(sender, args);
-            }
-        };
+        this.holder.getServer().getPluginManager().registerCommand(
+                this.holder.getPlugin(),
+                new Command(getCommandName(), getPermissionNode(), getCommandAliases()) {
+                    @Override
+                    public void execute(CommandSender sender, String[] args) {
+                        BungeeCommand.this.execute(sender, args);
+                    }
+                }
+        );
     }
 
     /**
