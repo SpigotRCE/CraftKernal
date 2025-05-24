@@ -26,7 +26,6 @@ public class PaperCommand extends CommandHolder implements TabExecutor {
      * @param commandName    The name of the command.
      * @param permissionNode The top level permission node for the command.
      * @param commandAliases The aliases of the command.
-     *
      * @throws NoSuchFieldException   If the command map field cannot be accessed.
      * @throws IllegalAccessException If the command map field cannot be accessed.
      */

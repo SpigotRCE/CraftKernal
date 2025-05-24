@@ -21,20 +21,19 @@ import java.util.concurrent.CompletableFuture;
  * and includes helper methods for command execution and tab completion.
  */
 public abstract class VelocityBrigadierCommand extends CommandHolder {
-    /*
-        * The {@link VelocityHolder} holder.
-     */
-    private final VelocityHolder holder;
-
     /**
      * A constant representing a successful command execution.
      */
     public final int SINGLE_SUCCESS = Command.SINGLE_SUCCESS;
+    /*
+     * The {@link VelocityHolder} holder.
+     */
+    private final VelocityHolder holder;
 
     /**
      * Constructs a new VelocityBrigadierCommand with the specified proxy server, logger, and plugin, command name, and command aliases.
      *
-     * @param holder    The {@link VelocityHolder} holder.
+     * @param holder         The {@link VelocityHolder} holder.
      * @param commandName    The name of the command.
      * @param permissionNode The top level permission node for the command.
      * @param commandAliases The aliases of the command.

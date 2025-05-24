@@ -102,6 +102,6 @@ public record PacketBuffer(ByteBuf buffer) {
     }
 
     public <T extends Enum<T>> T readEnumConstant(Class<T> enumClass) {
-        return (T)enumClass.getEnumConstants()[this.readInt()];
+        return (T) enumClass.getEnumConstants()[this.readInt()];
     }
 }
