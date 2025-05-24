@@ -1,10 +1,15 @@
-package io.spigotrce.craftkernal.velocity.command;
+package io.spigotrce.craftkernal.common.holder.command;
 
-public abstract class VelocityCommandHolder {
+public abstract class CommandHolder {
     /**
      * The name of the command.
      */
     private final String commandName;
+
+    /**
+     * The top level permission node for the command.
+     */
+    private final String permissionNode;
 
     /**
      * The aliases of the command.
@@ -12,13 +17,15 @@ public abstract class VelocityCommandHolder {
     private final String[] commandAliases;
 
     /**
-     * Constructs a new VelocityHolder with the specified proxy server, logger, and plugin.
+     * Constructs a new CommandHolder with the specified commandName, permissionNode, and commandAliases.
      *
      * @param commandName    The name of the command.
+     * @param permissionNode The top level permission node for the command.
      * @param commandAliases The aliases of the command.
      */
-    public VelocityCommandHolder(String commandName, String... commandAliases) {
+    public CommandHolder(String commandName, String permissionNode, String... commandAliases) {
         this.commandName = commandName;
+        this.permissionNode = permissionNode;
         this.commandAliases = commandAliases;
     }
 
@@ -29,6 +36,15 @@ public abstract class VelocityCommandHolder {
      */
     public String getCommandName() {
         return commandName;
+    }
+
+    /**
+     * Gets the top level permission node for the command.
+     *
+     * @return The top level permission node for the command.
+     */
+    public String getPermissionNode() {
+        return permissionNode;
     }
 
     /**

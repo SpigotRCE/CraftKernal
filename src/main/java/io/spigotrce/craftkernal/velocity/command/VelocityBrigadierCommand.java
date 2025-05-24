@@ -10,9 +10,8 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ProxyServer;
+import io.spigotrce.craftkernal.common.holder.command.CommandHolder;
 import io.spigotrce.craftkernal.velocity.VelocityHolder;
-import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
  * It provides functionality for registering commands with the proxy server using Brigadier
  * and includes helper methods for command execution and tab completion.
  */
-public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
+public abstract class VelocityBrigadierCommand extends CommandHolder {
     /*
         * The {@link VelocityHolder} holder.
      */
@@ -37,17 +36,12 @@ public abstract class VelocityBrigadierCommand extends VelocityCommandHolder {
      *
      * @param holder    The {@link VelocityHolder} holder.
      * @param commandName    The name of the command.
+     * @param permissionNode The top level permission node for the command.
      * @param commandAliases The aliases of the command.
      */
-    public VelocityBrigadierCommand(VelocityHolder holder, String commandName, String... commandAliases) {
-        super(commandName, commandAliases);
+    public VelocityBrigadierCommand(VelocityHolder holder, String commandName, String permissionNode, String... commandAliases) {
+        super(commandName, permissionNode, commandAliases);
         this.holder = holder;
-    }
-
-    /**
-     * Registers the command with the proxy server.
-     */
-    public void register() {
         this.holder.getServer().getCommandManager().register(
                 this.holder.getServer().getCommandManager().metaBuilder(getCommandName())
                         .aliases(getCommandAliases()).plugin(this.holder.getPlugin()).build(),
