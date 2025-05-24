@@ -13,12 +13,12 @@ public abstract class SignedPacket implements Packet {
     }
 
     @Override
-    public final void encode(PacketBuffer buffer) {
+    public void encode(PacketBuffer buffer) {
         buffer.writeUUID(uuid);
     }
 
     @Override
-    public final void decode(PacketBuffer buffer) {
+    public void decode(PacketBuffer buffer) {
         this.uuid = buffer.readUUID();
     }
 
