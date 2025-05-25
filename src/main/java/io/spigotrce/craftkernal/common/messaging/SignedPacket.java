@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * Abstract class representing a packet that is signed by an uuid.
  */
-public abstract class SignedPacket implements Packet {
+public abstract class SignedPacket extends Packet {
     private UUID uuid;
 
     public SignedPacket(UUID playerUuid) {
