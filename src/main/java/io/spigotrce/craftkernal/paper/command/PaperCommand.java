@@ -11,13 +11,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 public class PaperCommand extends CommandHolder implements TabExecutor {
     /**
      * The {@link PaperHolder} holder.
      */
     private final PaperHolder holder;
-
 
     /**
      * Constructs a new CommandHolder with the specified commandName, permissionNode, and commandAliases.
@@ -40,8 +40,9 @@ public class PaperCommand extends CommandHolder implements TabExecutor {
             }
 
             @Override
-            public @Nullable List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-                return PaperCommand.this.onTabComplete(sender, this, alias, args);
+            public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+                List<String> completions = PaperCommand.this.onTabComplete(sender, this, alias, args);
+                return Objects.requireNonNullElseGet(completions, List::of);
             }
         };
 
@@ -69,6 +70,6 @@ public class PaperCommand extends CommandHolder implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return List.of();
+        return null;
     }
 }
