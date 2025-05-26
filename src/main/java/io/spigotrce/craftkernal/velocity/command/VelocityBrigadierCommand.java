@@ -25,7 +25,7 @@ public abstract class VelocityBrigadierCommand extends CommandHolder {
      * A constant representing a successful command execution.
      */
     public final int SINGLE_SUCCESS = Command.SINGLE_SUCCESS;
-    /*
+    /**
      * The {@link VelocityHolder} holder.
      */
     private final VelocityHolder holder;

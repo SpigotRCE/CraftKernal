@@ -5,7 +5,7 @@ import io.spigotrce.craftkernal.common.holder.command.CommandHolder;
 import io.spigotrce.craftkernal.velocity.VelocityHolder;
 
 public abstract class VelocitySimpleCommand extends CommandHolder implements SimpleCommand {
-    /*
+    /**
      * The {@link VelocityHolder} holder.
      */
     private final VelocityHolder holder;

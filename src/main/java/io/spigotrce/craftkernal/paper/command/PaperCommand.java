@@ -63,13 +63,31 @@ public class PaperCommand extends CommandHolder implements TabExecutor {
         return holder;
     }
 
+    /**
+     * Executes the command with the given sender and arguments.
+     *
+     * @param commandSender The command sender.
+     * @param command       The command being executed.
+     * @param label         The label of the command.
+     * @param args          The arguments of the command.
+     * @return true if the command was executed successfully, false otherwise.
+     */
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return false;
     }
 
+    /**
+     * Handles tab completion for the command.
+     *
+     * @param commandSender The command sender.
+     * @param command       The command being executed.
+     * @param label         The label of the command.
+     * @param args          The arguments of the command.
+     * @return A list of suggestions for tab completion, or null if no suggestions are available.
+     */
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return null;
     }
 }

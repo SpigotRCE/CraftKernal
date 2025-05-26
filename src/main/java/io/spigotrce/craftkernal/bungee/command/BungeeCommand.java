@@ -44,5 +44,11 @@ public abstract class BungeeCommand extends CommandHolder implements TabExecutor
         return holder;
     }
 
+    /**
+     * Executes the command with the given sender and arguments.
+     *
+     * @param sender The command sender.
+     * @param args   The command arguments.
+     */
     public abstract void execute(CommandSender sender, String[] args);
 }

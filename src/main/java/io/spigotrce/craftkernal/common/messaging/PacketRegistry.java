@@ -30,7 +30,7 @@ public class PacketRegistry<T> {
     /**
      * Counter for assigning unique IDs to packets.
      */
-    private int nextId = 0;
+    private int nextId = -1;
 
     /**
      * Constructs a new PacketRegistry with the specified sender.

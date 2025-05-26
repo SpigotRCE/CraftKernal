@@ -6,15 +6,33 @@ import io.netty.buffer.Unpooled;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+/**
+ * PacketBuffer is a utility class for reading and writing various data types to a ByteBuf.
+ * It provides methods to write and read strings, booleans, longs, integers, shorts, bytes,
+ * doubles, floats, UUIDs, and enum constants.
+ */
 public record PacketBuffer(ByteBuf buffer) {
+    /**
+     * Constructs a new PacketBuffer with an empty ByteBuf.
+     */
     public PacketBuffer() {
         this(Unpooled.buffer());
     }
 
+    /**
+     * Constructs a new PacketBuffer with the specified byte array.
+     *
+     * @param bytes The byte array to wrap in a ByteBuf.
+     */
     public PacketBuffer(byte[] bytes) {
         this(Unpooled.wrappedBuffer(bytes));
     }
 
+    /**
+     * Constructs a new PacketBuffer with the specified ByteBuf.
+     *
+     * @param buffer The ByteBuf to wrap.
+     */
     public PacketBuffer(ByteBuf buffer) {
         this.buffer = buffer;
     }
