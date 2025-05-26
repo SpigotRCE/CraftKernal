@@ -1,5 +1,7 @@
 package io.spigotrce.craftkernal.common.messaging;
 
+import io.spigotrce.craftkernal.common.data.DataBuffer;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -79,7 +81,7 @@ public class PacketRegistry<T> {
      * @throws IllegalArgumentException If the packet ID is unknown.
      */
     public void decodeAndApply(byte[] data) {
-        decodeAndApply(new PacketBuffer(data));
+        decodeAndApply(new DataBuffer(data));
     }
 
     /**
@@ -88,7 +90,7 @@ public class PacketRegistry<T> {
      * @param buffer The PacketBuffer containing the packet data.
      * @throws IllegalArgumentException If the packet ID is unknown.
      */
-    public void decodeAndApply(PacketBuffer buffer) {
+    public void decodeAndApply(DataBuffer buffer) {
         int id = buffer.readInt();
 
         PacketEntry<?> entry = idToEntry.get(id);
@@ -114,7 +116,7 @@ public class PacketRegistry<T> {
             throw new IllegalArgumentException("Unregistered packet class: " + packet.getClass().getName());
         }
 
-        PacketBuffer buffer = new PacketBuffer();
+        DataBuffer buffer = new DataBuffer();
         buffer.writeInt(id);
         packet.encode(buffer);
 

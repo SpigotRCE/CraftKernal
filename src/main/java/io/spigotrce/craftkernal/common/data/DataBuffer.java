@@ -1,4 +1,4 @@
-package io.spigotrce.craftkernal.common.messaging;
+package io.spigotrce.craftkernal.common.data;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -11,11 +11,11 @@ import java.util.UUID;
  * It provides methods to write and read strings, booleans, longs, integers, shorts, bytes,
  * doubles, floats, UUIDs, and enum constants.
  */
-public record PacketBuffer(ByteBuf buffer) {
+public record DataBuffer(ByteBuf buffer) {
     /**
      * Constructs a new PacketBuffer with an empty ByteBuf.
      */
-    public PacketBuffer() {
+    public DataBuffer() {
         this(Unpooled.buffer());
     }
 
@@ -24,7 +24,7 @@ public record PacketBuffer(ByteBuf buffer) {
      *
      * @param bytes The byte array to wrap in a ByteBuf.
      */
-    public PacketBuffer(byte[] bytes) {
+    public DataBuffer(byte[] bytes) {
         this(Unpooled.wrappedBuffer(bytes));
     }
 
@@ -33,7 +33,7 @@ public record PacketBuffer(ByteBuf buffer) {
      *
      * @param buffer The ByteBuf to wrap.
      */
-    public PacketBuffer(ByteBuf buffer) {
+    public DataBuffer(ByteBuf buffer) {
         this.buffer = buffer;
     }
 
@@ -121,5 +121,19 @@ public record PacketBuffer(ByteBuf buffer) {
 
     public <T extends Enum<T>> T readEnumConstant(Class<T> enumClass) {
         return (T) enumClass.getEnumConstants()[this.readInt()];
+    }
+
+    public void writeData(Data data) {
+        data.encode(this);
+    }
+
+    public <T extends Data> T readData(Class<T> dataClass) {
+        try {
+            T instance = dataClass.getDeclaredConstructor().newInstance();
+            instance.decode(this);
+            return instance;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read data of type: " + dataClass.getName(), e);
+        }
     }
 }

@@ -1,17 +1,19 @@
 package io.spigotrce.craftkernal.messaging;
 
 import io.spigotrce.craftkernal.common.messaging.Packet;
-import io.spigotrce.craftkernal.common.messaging.PacketBuffer;
+import io.spigotrce.craftkernal.common.data.DataBuffer;
 
-public class TestPacket extends Packet {
+public class TestPacket implements Packet {
     private String message;
+    private TestData data;
 
     public TestPacket() {
         super();
     }
 
-    public TestPacket(String message) {
+    public TestPacket(String message, TestData data) {
         this.message = message;
+        this.data = data;
     }
 
     public String getMessage() {
@@ -22,14 +24,24 @@ public class TestPacket extends Packet {
         this.message = message;
     }
 
-    @Override
-    public void encode(PacketBuffer buffer) {
-        buffer.writeString(message);
+    public TestData getData() {
+        return data;
+    }
+
+    public void setData(TestData data) {
+        this.data = data;
     }
 
     @Override
-    public void decode(PacketBuffer buffer) {
+    public void encode(DataBuffer buffer) {
+        buffer.writeString(message);
+        buffer.writeData(data);
+    }
+
+    @Override
+    public void decode(DataBuffer buffer) {
         message = buffer.readString();
+        data = buffer.readData(TestData.class);
     }
 }
 

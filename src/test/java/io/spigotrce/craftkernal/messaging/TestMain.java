@@ -18,6 +18,7 @@ public class TestMain {
 
         registry.registerPacket(TestPacket::new, packet -> {
             System.out.println("Message: " + packet.getMessage());
+            System.out.println("Data: " + packet.getData().getMessage());
         });
 
         registry.registerPacket(TestSignedPacket::new, packet -> {
@@ -25,7 +26,7 @@ public class TestMain {
             System.out.println("UUID: " + packet.getUuid());
         });
 
-        registry.encodeAndSend(new TestPacket("Hellow"), null);
+        registry.encodeAndSend(new TestPacket("Hellow", new TestData("World!")), null);
         registry.decodeAndApply(buf.get());
         registry.encodeAndSend(new TestSignedPacket(UUID.randomUUID(), "Hellow signed packet"), null);
         registry.decodeAndApply(buf.get());

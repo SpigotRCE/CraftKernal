@@ -1,11 +1,13 @@
 package io.spigotrce.craftkernal.common.messaging;
 
+import io.spigotrce.craftkernal.common.data.DataBuffer;
+
 import java.util.UUID;
 
 /**
  * Abstract class representing a packet that is signed by an uuid.
  */
-public abstract class SignedPacket extends Packet {
+public abstract class SignedPacket implements Packet {
     /**
      * The UUID used to sign this packet.
      */
@@ -24,7 +26,7 @@ public abstract class SignedPacket extends Packet {
      * Encodes the uuid into the specified buffer.
      */
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(DataBuffer buffer) {
         buffer.writeUUID(uuid);
     }
 
@@ -32,7 +34,7 @@ public abstract class SignedPacket extends Packet {
      * Decodes the uuid from the specified buffer.
      */
     @Override
-    public void decode(PacketBuffer buffer) {
+    public void decode(DataBuffer buffer) {
         this.uuid = buffer.readUUID();
     }
 
