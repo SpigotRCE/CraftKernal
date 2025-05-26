@@ -6,16 +6,16 @@ package io.spigotrce.craftkernal.common.data;
  */
 public interface Data {
     /**
-     * Encodes the packet into the specified buffer.
+     * Encodes the data into the specified buffer.
      *
-     * @param buffer The buffer to encode the packet into.
+     * @param buffer The buffer to encode the data into.
      */
     void encode(DataBuffer buffer);
 
     /**
-     * Decodes the packet from the specified buffer.
+     * Decodes the data from the specified buffer.
      *
-     * @param buffer The buffer to decode the packet from.
+     * @param buffer The buffer to decode the data from.
      */
     void decode(DataBuffer buffer);
 }
