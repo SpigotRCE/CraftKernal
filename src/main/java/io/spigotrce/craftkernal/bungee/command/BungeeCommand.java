@@ -1,7 +1,7 @@
 package io.spigotrce.craftkernal.bungee.command;
 
 import io.spigotrce.craftkernal.bungee.BungeeHolder;
-import io.spigotrce.craftkernal.common.holder.command.CommandHolder;
+import io.spigotrce.craftkernal.common.holder.plugin.command.CommandHolder;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;

@@ -1,4 +1,6 @@
-package io.spigotrce.craftkernal.common.holder;
+package io.spigotrce.craftkernal.common.holder.plugin;
+
+import io.spigotrce.craftkernal.common.holder.java.ClassHolder;
 
 public class PluginHolder<S, L, P> extends ClassHolder {
     /**

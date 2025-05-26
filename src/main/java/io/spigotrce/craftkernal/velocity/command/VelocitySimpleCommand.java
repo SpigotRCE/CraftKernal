@@ -1,7 +1,7 @@
 package io.spigotrce.craftkernal.velocity.command;
 
 import com.velocitypowered.api.command.SimpleCommand;
-import io.spigotrce.craftkernal.common.holder.command.CommandHolder;
+import io.spigotrce.craftkernal.common.holder.plugin.command.CommandHolder;
 import io.spigotrce.craftkernal.velocity.VelocityHolder;
 
 public abstract class VelocitySimpleCommand extends CommandHolder implements SimpleCommand {

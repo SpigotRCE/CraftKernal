@@ -1,6 +1,6 @@
 package io.spigotrce.craftkernal.paper.command;
 
-import io.spigotrce.craftkernal.common.holder.command.CommandHolder;
+import io.spigotrce.craftkernal.common.holder.plugin.command.CommandHolder;
 import io.spigotrce.craftkernal.paper.PaperHolder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;

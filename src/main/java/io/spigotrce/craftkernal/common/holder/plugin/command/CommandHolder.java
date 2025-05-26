@@ -1,4 +1,4 @@
-package io.spigotrce.craftkernal.common.holder.command;
+package io.spigotrce.craftkernal.common.holder.plugin.command;
 
 public abstract class CommandHolder {
     /**

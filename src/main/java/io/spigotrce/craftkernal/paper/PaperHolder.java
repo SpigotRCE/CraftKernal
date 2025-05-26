@@ -1,6 +1,6 @@
 package io.spigotrce.craftkernal.paper;
 
-import io.spigotrce.craftkernal.common.holder.PluginHolder;
+import io.spigotrce.craftkernal.common.holder.plugin.PluginHolder;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 

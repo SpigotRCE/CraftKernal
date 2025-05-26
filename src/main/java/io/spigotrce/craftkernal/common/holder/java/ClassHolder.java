@@ -1,4 +1,4 @@
-package io.spigotrce.craftkernal.common.holder;
+package io.spigotrce.craftkernal.common.holder.java;
 
 /**
  * This class holds the class name.

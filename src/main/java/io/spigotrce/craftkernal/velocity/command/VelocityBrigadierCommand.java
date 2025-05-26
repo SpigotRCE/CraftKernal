@@ -10,7 +10,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
-import io.spigotrce.craftkernal.common.holder.command.CommandHolder;
+import io.spigotrce.craftkernal.common.holder.plugin.command.CommandHolder;
 import io.spigotrce.craftkernal.velocity.VelocityHolder;
 
 import java.util.concurrent.CompletableFuture;

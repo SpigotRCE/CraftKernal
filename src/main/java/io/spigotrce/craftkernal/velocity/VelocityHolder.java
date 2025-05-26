@@ -1,7 +1,7 @@
 package io.spigotrce.craftkernal.velocity;
 
 import com.velocitypowered.api.proxy.ProxyServer;
-import io.spigotrce.craftkernal.common.holder.PluginHolder;
+import io.spigotrce.craftkernal.common.holder.plugin.PluginHolder;
 import org.slf4j.Logger;
 
 /**
