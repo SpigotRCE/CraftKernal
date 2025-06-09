@@ -10,12 +10,12 @@ public interface Data {
      *
      * @param buffer The buffer to encode the data into.
      */
-    void encode(DataBuffer buffer);
+    void encode(DataByteBuf buffer);
 
     /**
      * Decodes the data from the specified buffer.
      *
      * @param buffer The buffer to decode the data from.
      */
-    void decode(DataBuffer buffer);
+    void decode(DataByteBuf buffer);
 }

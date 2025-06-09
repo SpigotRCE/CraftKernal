@@ -1,7 +1,7 @@
 package io.spigotrce.craftkernal.messaging;
 
 import io.spigotrce.craftkernal.common.messaging.Packet;
-import io.spigotrce.craftkernal.common.data.DataBuffer;
+import io.spigotrce.craftkernal.common.data.DataByteBuf;
 
 public class TestPacket implements Packet {
     private String message;
@@ -33,13 +33,13 @@ public class TestPacket implements Packet {
     }
 
     @Override
-    public void encode(DataBuffer buffer) {
+    public void encode(DataByteBuf buffer) {
         buffer.writeString(message);
         buffer.writeData(data);
     }
 
     @Override
-    public void decode(DataBuffer buffer) {
+    public void decode(DataByteBuf buffer) {
         message = buffer.readString();
         data = buffer.readData(TestData.class);
     }
